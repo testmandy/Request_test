@@ -1,8 +1,9 @@
-package com.test;
+package com.test.cases;
 
+import com.sun.javafx.fxml.builder.URLBuilder;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.CookieStore;
 import org.apache.http.client.methods.*;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -10,15 +11,11 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 import org.testng.Assert;
 
-import javax.servlet.http.Cookie;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
-
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.*;
 
 
 public class HttpMethod {
@@ -29,6 +26,7 @@ public class HttpMethod {
     String getUrl = "https://reqres.in/api/users";
     String postUrl = "https://reqres.in/api/login";
 
+
     //创建get请求
     public HttpGet getMethod(int page){
         System.out.println("[MyLog]-----------开始执行get请求-----------");
@@ -36,6 +34,29 @@ public class HttpMethod {
         String testUrl = this.getUrl + uri + page;
         HttpGet get = new HttpGet(testUrl);
         return get;
+    }
+
+    public String getWithParam(String url, Map<String,Integer> param) throws URISyntaxException, IOException {
+        System.out.println("[MyLog]-----------开始执行get请求-----------");
+        URIBuilder builder = new URIBuilder(url);
+        if (param != null){
+            for (String key:param.keySet()){
+                builder.addParameter(key, String.valueOf(param.get(key)));
+            }
+        }
+        URI uri = builder.build();
+        System.out.println(uri);
+        HttpGet get = new HttpGet(uri);
+        System.out.println("[MyLog]-----------开始获取response-----------");
+        CloseableHttpResponse response = null;
+        response = client.execute(get);
+        int expectCode = 200;
+        int actualCode = response.getStatusLine().getStatusCode();
+        String result = EntityUtils.toString(response.getEntity());
+        System.out.println("[MyLog]-----------开始获取执行结果，断言-----------");
+        Assert.assertEquals(actualCode,expectCode,"断言失败");
+        System.out.println(result);
+        return result;
     }
 
 
@@ -71,16 +92,6 @@ public class HttpMethod {
     }
 
 
-
-//    //验证cookies
-//    public void verifyCookie(HttpServletRequest request){
-//        CookieStore store;
-//        Cookie[] cookies = request.getCookies();
-//        System.out.println("cookies: "+ Arrays.toString(cookies));
-//    }
-
-
-
     //接收response
     public CloseableHttpResponse getResponse(String method) throws IOException {
         System.out.println("[MyLog]-----------开始获取response-----------");
@@ -110,10 +121,12 @@ public class HttpMethod {
         System.out.println(result);
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, URISyntaxException {
         HttpMethod method = new HttpMethod();
-        method.getResult("get");
-        method.getResult("post");
+        String myget = "http://localhost:8080/v1/getUser";
+        Map<String,Integer> param = new HashMap();
+        param.put("id",1);
+        method.getWithParam(myget,param);
     }
 
 }

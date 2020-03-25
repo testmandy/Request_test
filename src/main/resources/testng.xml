@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<suite name="demo接口测试套件">
+    <test name="demo接口测试用例">
+        <classes>
+            <class name="com.test.practice.Demo">
+                <methods>
+                    <include name="getCount"/>
+                </methods>
+            </class>
+
+        </classes>
+
+    </test>
+    <listeners>
+        <listener class-name="com.test.practice.ExtentTestNGIReporterListener"/>
+    </listeners>
+</suite>
