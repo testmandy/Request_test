@@ -20,7 +20,7 @@ public class MyGet {
     @Autowired
     public UserService userService = null;
 
-    @GetMapping(value = "/getUser")
+    @GetMapping("/getUser")
     @ApiOperation(value = "获取用户信息",httpMethod = "GET")
     public String getUser(int id) throws IOException {
         return userService.getUser(id);

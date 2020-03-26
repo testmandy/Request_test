@@ -14,7 +14,6 @@ public class Demo2 {
         SqlSession session = DButil.getSession();
 
         User user = session.selectOne("sendLottery",1);
-        System.out.println("期望值是： " +user.expected);
         JSONObject dependAddress = Demo.getResult().getJSONObject("total");
         System.out.println(dependAddress);
     }

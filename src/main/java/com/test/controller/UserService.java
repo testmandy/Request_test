@@ -10,6 +10,8 @@ public interface UserService {
 
     List<User> findUser(String email);
 
+    int addUser(User user);
+
     int deleteUser(int id);
 
     int updateUser(int id,String email);

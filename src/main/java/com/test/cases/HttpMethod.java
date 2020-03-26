@@ -11,6 +11,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -49,6 +50,35 @@ public class HttpMethod {
         HttpGet get = new HttpGet(uri);
         System.out.println("[MyLog]-----------开始获取response-----------");
         CloseableHttpResponse response = client.execute(get);
+        int expectCode = 200;
+        int actualCode = response.getStatusLine().getStatusCode();
+        String result = EntityUtils.toString(response.getEntity());
+        System.out.println("[MyLog]-----------开始获取执行结果，断言-----------");
+        Assert.assertEquals(actualCode,expectCode,"断言失败");
+        System.out.println(result);
+        return result;
+    }
+
+    public String postWithParam(String url, String paramStr) throws IOException {
+        System.out.println("[MyLog]-----------开始执行post请求-----------");
+        JSONObject paramJson = new JSONObject(paramStr);
+        System.out.printf("paramJson is: %s \n",paramJson);
+        JSONObject param = new JSONObject();
+        //遍历字符串中的key和value
+        Iterator<String> it = paramJson.keys();
+        while (it.hasNext()){
+            String key = it.next();
+//            String value = String.valueOf(paramJson.getInt(key));
+            String value = paramJson.getString(key);
+            System.out.printf("遍历结果为--- %s : %s \n",key,value);
+            param.put(key,value);
+        }
+        StringEntity entity = new StringEntity(param.toString());
+        HttpPost post = new HttpPost(url);
+        post.setHeader("Content-Type","application/json");
+        post.setEntity(entity);
+        System.out.println("[MyLog]-----------开始获取response-----------");
+        CloseableHttpResponse response = client.execute(post);
         int expectCode = 200;
         int actualCode = response.getStatusLine().getStatusCode();
         String result = EntityUtils.toString(response.getEntity());
@@ -120,12 +150,22 @@ public class HttpMethod {
         System.out.println(result);
     }
 
-    public static void main(String[] args) throws IOException, URISyntaxException {
+    @Test(enabled = false)
+    public void runGet() throws IOException, URISyntaxException {
         HttpMethod method = new HttpMethod();
         String myget = "http://localhost:8080/getUser";
         Map<String, Integer> param = new HashMap<String, Integer>();
         param.put("id",1);
         method.getWithParam(myget,param);
     }
+
+    @Test
+    public void runPost() throws IOException{
+        HttpMethod method = new HttpMethod();
+        String myget = "http://localhost:8080/addUser2";
+        String param = "{'age':'18','password':'bbb','sex':'1','username':'mandy'}";
+        method.postWithParam(myget,param);
+    }
+
 
 }

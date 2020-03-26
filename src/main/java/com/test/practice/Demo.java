@@ -17,9 +17,7 @@ public class Demo {
     @Test
     public User getCount() throws IOException {
         SqlSession session = DButil.getSession();
-        User user = session.selectOne("sendLottery",1);
-        System.out.println(user.expected);
-        return user;
+        return session.selectOne("sendLottery",1);
     }
 
 

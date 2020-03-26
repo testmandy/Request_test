@@ -24,6 +24,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int addUser(User user) {
+        return template.insert("addUser",user);
+    }
+
+    @Override
     public int deleteUser(int id) {
         return 0;
     }
