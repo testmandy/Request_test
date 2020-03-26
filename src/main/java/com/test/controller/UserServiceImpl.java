@@ -3,19 +3,19 @@ package com.test.controller;
 import com.test.model.User;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
 
-@Controller
+@Service
 public class UserServiceImpl implements UserService {
     @Autowired
-    public SqlSessionTemplate template;
+    public SqlSessionTemplate template = null;
 
     @Override
-    public User getUser(int id) throws IOException {
-        return template.selectOne("getUserInfo",1);
+    public String getUser(int id) {
+        return template.selectOne("getUserInfo",id).toString();
     }
 
     @Override

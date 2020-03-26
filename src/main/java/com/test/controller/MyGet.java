@@ -5,24 +5,24 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.log4j.Log4j;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
 @Log4j
 @RestController
-@Api(value = "v1",description = "用户相关接口")
-@RequestMapping("v1")
+@Api(value = "v1")
+@RequestMapping
+@ResponseBody
 public class MyGet {
+//    @Autowired
+//    public SqlSessionTemplate template;
     @Autowired
-    public SqlSessionTemplate template;
+    public UserService userService = null;
 
     @GetMapping(value = "/getUser")
     @ApiOperation(value = "获取用户信息",httpMethod = "GET")
     public String getUser(int id) throws IOException {
-        return template.selectOne("getUserInfo",id).toString();
+        return userService.getUser(id);
     }
 }

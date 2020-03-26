@@ -1,6 +1,7 @@
 package com.test.cases;
 
 import com.sun.javafx.fxml.builder.URLBuilder;
+import io.swagger.models.auth.In;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
@@ -32,8 +33,7 @@ public class HttpMethod {
         System.out.println("[MyLog]-----------开始执行get请求-----------");
         String uri = "?page=";
         String testUrl = this.getUrl + uri + page;
-        HttpGet get = new HttpGet(testUrl);
-        return get;
+        return new HttpGet(testUrl);
     }
 
     public String getWithParam(String url, Map<String,Integer> param) throws URISyntaxException, IOException {
@@ -48,8 +48,7 @@ public class HttpMethod {
         System.out.println(uri);
         HttpGet get = new HttpGet(uri);
         System.out.println("[MyLog]-----------开始获取response-----------");
-        CloseableHttpResponse response = null;
-        response = client.execute(get);
+        CloseableHttpResponse response = client.execute(get);
         int expectCode = 200;
         int actualCode = response.getStatusLine().getStatusCode();
         String result = EntityUtils.toString(response.getEntity());
@@ -123,8 +122,8 @@ public class HttpMethod {
 
     public static void main(String[] args) throws IOException, URISyntaxException {
         HttpMethod method = new HttpMethod();
-        String myget = "http://localhost:8080/v1/getUser";
-        Map<String,Integer> param = new HashMap();
+        String myget = "http://localhost:8080/getUser";
+        Map<String, Integer> param = new HashMap<String, Integer>();
         param.put("id",1);
         method.getWithParam(myget,param);
     }

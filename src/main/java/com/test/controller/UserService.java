@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.util.List;
 
 public interface UserService {
-    public User getUser(int id) throws IOException;
+    String getUser(int id) throws IOException;
 
-    public List<User> findUser(String email);
+    List<User> findUser(String email);
 
-    public int deleteUser(int id);
+    int deleteUser(int id);
 
-    public int updateUser(int id,String email);
+    int updateUser(int id,String email);
 
 }
