@@ -55,7 +55,7 @@ public class MyPost {
 
     @PostMapping("/addUser2")
     @ApiOperation(value = "添加用户2", httpMethod = "POST")
-    public Result addUser2(@RequestBody @ApiParam(name="data",value="请传入json格式",required=true)User user){
+    public Result addUser2(@RequestBody @ApiParam(name="111",value="请传入json格式",required=true)User user){
         int i;
         Result result;
         String data;

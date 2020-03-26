@@ -13,6 +13,12 @@ spring:
     url: jdbc:mysql://172.16.5.4:3306/top?useSSL=false
     username: mandy
     password: 123456
+  devtools:
+    livereload:
+      enabled: true #是否支持livereload
+      port: 35729
+    restart:
+      enabled: true #是否支持热部署
 
 mybatis:
   type-aliases-package: com.test.model
