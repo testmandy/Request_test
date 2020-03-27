@@ -7,13 +7,6 @@
     <groupId>org.example</groupId>
     <artifactId>test</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>alimaven spring plugin</id>
-            <name>alimaven spring plugin</name>
-            <url>https://maven.aliyun.com/repository/spring-plugin</url>
-        </pluginRepository>
-    </pluginRepositories>
     <build>
         <plugins>
             <plugin>
@@ -22,15 +15,6 @@
                 <configuration>
                     <source>6</source>
                     <target>6</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.1.0.RELEASE</version>
-                <configuration>
-                    <!--fork : 如果没有该项配置，devtools不会起作用，即应用不会restart -->
-                    <fork>true</fork>
                 </configuration>
             </plugin>
         </plugins>
@@ -89,6 +73,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
             <version>1.2</version>
@@ -142,14 +132,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- 热部署方法1 spring boot devtools 依赖包. -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <version>2.1.0.RELEASE</version>
-            <optional>true</optional>
-        </dependency>
-
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
@@ -186,24 +168,23 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>2.15.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>5.0.6.RELEASE</version>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>2.23.4</version>
             <scope>compile</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>5.2.2.RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
 
     </dependencies>
 

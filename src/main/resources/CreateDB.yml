@@ -20,7 +20,9 @@ CREATE TABLE:
   password varchar(255) NOT NULL,
   age int,
   sex int,
-  idDelete int)
+  idDelete int,
+  create_time DATETIME,
+  last_update TIMESTAMP)
 
 SQL SELECT:
   SELECT column_name,column_name

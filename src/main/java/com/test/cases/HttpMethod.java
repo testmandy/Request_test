@@ -1,7 +1,5 @@
 package com.test.cases;
 
-import com.sun.javafx.fxml.builder.URLBuilder;
-import io.swagger.models.auth.In;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
@@ -12,6 +10,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import springfox.documentation.spring.web.json.Json;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -36,58 +35,6 @@ public class HttpMethod {
         String testUrl = this.getUrl + uri + page;
         return new HttpGet(testUrl);
     }
-
-    public String getWithParam(String url, Map<String,Integer> param) throws URISyntaxException, IOException {
-        System.out.println("[MyLog]-----------开始执行get请求-----------");
-        URIBuilder builder = new URIBuilder(url);
-        if (param != null){
-            for (String key:param.keySet()){
-                builder.addParameter(key, String.valueOf(param.get(key)));
-            }
-        }
-        URI uri = builder.build();
-        System.out.println(uri);
-        HttpGet get = new HttpGet(uri);
-        System.out.println("[MyLog]-----------开始获取response-----------");
-        CloseableHttpResponse response = client.execute(get);
-        int expectCode = 200;
-        int actualCode = response.getStatusLine().getStatusCode();
-        String result = EntityUtils.toString(response.getEntity());
-        System.out.println("[MyLog]-----------开始获取执行结果，断言-----------");
-        Assert.assertEquals(actualCode,expectCode,"断言失败");
-        System.out.println(result);
-        return result;
-    }
-
-    public String postWithParam(String url, String paramStr) throws IOException {
-        System.out.println("[MyLog]-----------开始执行post请求-----------");
-        JSONObject paramJson = new JSONObject(paramStr);
-        System.out.printf("paramJson is: %s \n",paramJson);
-        JSONObject param = new JSONObject();
-        //遍历字符串中的key和value
-        Iterator<String> it = paramJson.keys();
-        while (it.hasNext()){
-            String key = it.next();
-//            String value = String.valueOf(paramJson.getInt(key));
-            String value = paramJson.getString(key);
-            System.out.printf("遍历结果为--- %s : %s \n",key,value);
-            param.put(key,value);
-        }
-        StringEntity entity = new StringEntity(param.toString());
-        HttpPost post = new HttpPost(url);
-        post.setHeader("Content-Type","application/json");
-        post.setEntity(entity);
-        System.out.println("[MyLog]-----------开始获取response-----------");
-        CloseableHttpResponse response = client.execute(post);
-        int expectCode = 200;
-        int actualCode = response.getStatusLine().getStatusCode();
-        String result = EntityUtils.toString(response.getEntity());
-        System.out.println("[MyLog]-----------开始获取执行结果，断言-----------");
-        Assert.assertEquals(actualCode,expectCode,"断言失败");
-        System.out.println(result);
-        return result;
-    }
-
 
     //创建post请求
     public HttpPost postMethod() throws UnsupportedEncodingException {
@@ -137,8 +84,6 @@ public class HttpMethod {
         return response;
     }
 
-
-
     //断言
     public void getResult(String method) throws IOException {
         CloseableHttpResponse response = this.getResponse(method);
@@ -150,22 +95,89 @@ public class HttpMethod {
         System.out.println(result);
     }
 
-    @Test(enabled = false)
-    public void runGet() throws IOException, URISyntaxException {
-        HttpMethod method = new HttpMethod();
-        String myget = "http://localhost:8080/getUser";
-        Map<String, Integer> param = new HashMap<String, Integer>();
-        param.put("id",1);
-        method.getWithParam(myget,param);
+
+    /**
+     *
+     * @param url
+     * @return
+     * @throws IOException
+     */
+    public String get(String url) throws IOException {
+        HttpGet get = new HttpGet(url);
+        System.out.println("[MyLog]-----------开始获取response-----------");
+        CloseableHttpResponse response = client.execute(get);
+        int expectCode = 200;
+        int actualCode = response.getStatusLine().getStatusCode();
+        String result = EntityUtils.toString(response.getEntity());
+        System.out.println("[MyLog]-----------开始获取执行结果，断言-----------");
+        Assert.assertEquals(actualCode,expectCode,"断言失败");
+        System.out.println(result);
+        return result;
     }
 
-    @Test
-    public void runPost() throws IOException{
-        HttpMethod method = new HttpMethod();
-        String myget = "http://localhost:8080/addUser2";
-        String param = "{'age':'18','password':'bbb','sex':'1','username':'mandy'}";
-        method.postWithParam(myget,param);
+    /**
+     *
+     * @param url
+     * @param param
+     * @return
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+    public String getWithParam(String url, Map<String,Integer> param) throws URISyntaxException, IOException {
+        System.out.println("[MyLog]-----------开始执行get请求-----------");
+        URIBuilder builder = new URIBuilder(url);
+        if (param != null){
+            for (String key:param.keySet()){
+                builder.addParameter(key, String.valueOf(param.get(key)));
+            }
+        }
+        URI uri = builder.build();
+        System.out.println(uri);
+        HttpGet get = new HttpGet(uri);
+        System.out.println("[MyLog]-----------开始获取response-----------");
+        CloseableHttpResponse response = client.execute(get);
+        int expectCode = 200;
+        int actualCode = response.getStatusLine().getStatusCode();
+        String result = EntityUtils.toString(response.getEntity());
+        System.out.println("[MyLog]-----------开始获取执行结果，断言-----------");
+        Assert.assertEquals(actualCode,expectCode,"断言失败");
+        System.out.println(result);
+        return result;
     }
 
+    /**
+     *
+     * @param url
+     * @param param
+     * @return
+     * @throws IOException
+     */
+    public String postWithParam(String url, String param) throws IOException {
+        System.out.println("[MyLog]-----------开始执行post请求-----------");
+        JSONObject json = new JSONObject(param);
+        System.out.printf("paramJson is: %s \n",json);
+        JSONObject paramJson = new JSONObject();
+        //遍历字符串中的key和value
+        Iterator<String> it = json.keys();
+        while (it.hasNext()){
+            String key = it.next();
+//            String value = String.valueOf(paramJson.getInt(key));
+            String value = json.getString(key);
+            System.out.printf("遍历结果为--- %s : %s \n",key,value);
+            paramJson.put(key,value);
+        }
+        StringEntity entity = new StringEntity(paramJson.toString());
+        HttpPost post = new HttpPost(url);
+        post.setHeader("Content-Type","application/json");
+        post.setEntity(entity);
+        System.out.println("[MyLog]-----------开始获取response-----------");
+        CloseableHttpResponse response = client.execute(post);
+        int actualCode = response.getStatusLine().getStatusCode();
+        String result = EntityUtils.toString(response.getEntity());
+        System.out.println("[MyLog]-----------开始获取执行结果，断言-----------");
+        Assert.assertEquals(actualCode,200,"断言失败");
+        System.out.println(result);
+        return result;
+    }
 
 }

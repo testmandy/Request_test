@@ -19,8 +19,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findUser(String email) {
-        return null;
+    public List<User> getUserList(int start) {
+        return template.selectList("getUserList",start);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int updateUser(int id, String email) {
-        return 0;
+    public int updateUser(User user) {
+        return template.update("updateUser",user);
     }
 }

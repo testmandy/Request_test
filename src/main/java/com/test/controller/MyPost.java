@@ -21,18 +21,18 @@ public class MyPost {
     @Autowired
     public UserService userService = null;
 
-    @PostMapping("/addUser")
+    @PostMapping("/addUserFromHeader")
     @ApiOperation(value = "添加用户", httpMethod = "POST")
-    public Result addUser(@RequestParam(value = "username") String username,
-                          @RequestParam(value = "password") String password,
+    public Result addUser(@RequestParam("username") String username,
+                          @RequestParam("password") String password,
                           @RequestParam(value = "age", required = false) int age,
                           @RequestParam(value = "sex", required = false) int sex){
 //        name = "6-12位字母和数字组合",
         User user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setAge(age);
-        user.setSex(sex);
+        user.setUsername("111");
+        user.setPassword("222");
+        user.setAge(3);
+        user.setSex(4);
         int i;
         Result result;
         String data;
@@ -53,8 +53,8 @@ public class MyPost {
         return result;
     }
 
-    @PostMapping("/addUser2")
-    @ApiOperation(value = "添加用户2", httpMethod = "POST")
+    @PostMapping("/addUser")
+    @ApiOperation(value = "添加用户", httpMethod = "POST")
     public Result addUser2(@RequestBody @ApiParam(name="111",value="请传入json格式",required=true)User user){
         int i;
         Result result;
@@ -71,6 +71,30 @@ public class MyPost {
             i = userService.addUser(user);
             data = user.toString();
             message = i>0? "添加用户成功":"添加用户失败";
+            result = new Result(i,message,data);
+        }
+        return result;
+    }
+
+
+    @PostMapping("/updateUser")
+    @ApiOperation(value = "更新用户", httpMethod = "POST")
+    public Result updateUser(@RequestBody @ApiParam(name="data",value="请传入json格式",required=true)User user){
+        int i;
+        Result result;
+        String data;
+        String error;
+        String message;
+        String pattern = "[a-z]|[A-Z]|[0-9]{6,12}";
+        // 创建 Pattern 对象
+        Matcher m = Pattern.compile(pattern).matcher(user.password);
+        if (!m.find( )) {
+            error = "请输入正确的密码";
+            result = new Result(error);
+        }else {
+            i = userService.updateUser(user);
+            data = user.toString();
+            message = i>0? "更新用户成功":"更新用户失败";
             result = new Result(i,message,data);
         }
         return result;

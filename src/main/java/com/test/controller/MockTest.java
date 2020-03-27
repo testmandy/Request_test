@@ -1,13 +1,13 @@
 package com.test.controller;
 
 import com.test.model.Product;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.testng.Assert;
+import org.testng.annotations.Test;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

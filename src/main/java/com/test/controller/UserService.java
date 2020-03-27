@@ -8,12 +8,12 @@ import java.util.List;
 public interface UserService {
     String getUser(int id) throws IOException;
 
-    List<User> findUser(String email);
+    List<User> getUserList(int start);
 
     int addUser(User user);
 
     int deleteUser(int id);
 
-    int updateUser(int id,String email);
+    int updateUser(User user);
 
 }

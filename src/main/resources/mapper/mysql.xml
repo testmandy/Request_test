@@ -16,10 +16,21 @@
     </select>
 
 
+    <select id="getUserList" parameterType="Integer" resultType="com.test.model.User">
+        select * from users
+        limit #{start},10;
+    </select>
+
     <insert id="addUser" parameterType="com.test.model.User">
-        insert into users(username,password,age,sex,idDelete)
-        values(#{username},#{password},#{age},#{sex},0);
+        insert into users(username,password,age,sex,idDelete,create_time)
+        values(#{username},#{password},#{age},#{sex},0,current_timestamp());
     </insert>
+
+
+    <update id="updateUser" parameterType="com.test.model.User">
+        update users set username=#{username},password=#{password},age=#{age},sex=#{sex}
+        where id=#{id};
+    </update>
 
 
     <sql id="createTable">
@@ -33,15 +44,6 @@
         CONSTRAINT pk_PersonID PRIMARY KEY (P_Id,LastName)
         )
     </sql>
-
-    <select id="getUserList" resultType="com.test.model.User">
-        select * from user;
-    </select>
-
-    <update id="updateUser" parameterType="com.test.model.User">
-        update user set name=#{name},age=#{age}
-        where id=#{id};
-    </update>
 
     <delete id="deleteUser" parameterType="Integer">
         delete from user where id=#{id};
